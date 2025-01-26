@@ -4,6 +4,7 @@ from app.permissions import GlobalDefaultPermission
 from actors.models import Actor
 from actors.serializers import ActorSerializer
 
+
 class ActorCreateListView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, GlobalDefaultPermission,)
     queryset = Actor.objects.all()
