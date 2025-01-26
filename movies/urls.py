@@ -5,4 +5,6 @@ urlpatterns = [
 
     path('movies/', views.MovieCreateListView.as_view(), name='movies-create-list'),
     path('movies/<int:pk>/', views.MovieRetrieveUpdateDestroy.as_view(), name='movies-detail-view'),
+
+    path('movies/stats/', views.MovieStatsView.as_view(), name='movies-stats-view'),
 ]
