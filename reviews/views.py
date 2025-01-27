@@ -14,3 +14,4 @@ class ReviewRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, GlobalDefaultPermission,)
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+
