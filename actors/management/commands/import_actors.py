@@ -3,6 +3,7 @@ from datetime import datetime
 from django.core.management.base import BaseCommand
 from actors.models import Actor
 
+
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
@@ -30,4 +31,4 @@ class Command(BaseCommand):
                     nationality=nationality,
                 )
 
-        self.stdout.write(self.style.SUCCESS('Atores importados com sucesso!'))
+        self.stdout.write(self.style.SUCCESS('Atores importados com sucesso!'))        
