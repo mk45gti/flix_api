@@ -1,22 +1,16 @@
 from rest_framework import serializers
 from movies.models import Movie
+from genres.serializers import GenreSerializer
+from actors.serializers import ActorSerializer
 from django.db.models import Avg
 
 
 class MovieModelSerializer(serializers.ModelSerializer):
-    rate = serializers.SerializerMethodField(read_only=True)
-
+    
     class Meta:
         model = Movie
         fields = '__all__'
     
-    def get_rate(self, obj):
-        rate = obj.reviews.aggregate(Avg('stars'))['stars__avg']
-
-        if rate:
-            return round(rate, 1)
-        return None
-
     def validate_release_date(self, value):
         if value.year < 1970:
             raise serializers.ValidationError('A data de lançamento não pode ser inferior a 1990.')
@@ -27,6 +21,22 @@ class MovieModelSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('A sinopse deve ter no mínimo 100 caracteres.')
         return value
     
+class MovieListDetailSerializer(serializers.ModelSerializer):
+    actors = ActorSerializer(many=True)
+    genre = GenreSerializer()
+    rate = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Movie
+        fields = ['id', 'title', 'genre', 'actors', 'release_date', 'rate', 'resume']
+
+    def get_rate(self, obj):
+        rate = obj.reviews.aggregate(Avg('stars'))['stars__avg']
+
+        if rate:
+            return round(rate, 1)
+        return None   
+
 class MovieStatsSerializer(serializers.Serializer):
     total_movies = serializers.IntegerField()
     movies_by_genre = serializers.ListField(child=serializers.DictField())
